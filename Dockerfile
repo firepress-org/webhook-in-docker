@@ -1,8 +1,10 @@
 ARG APP_NAME="webhook"
 ARG VERSION="2.6.9"
+ARG GIT_REPO="https://github.com/firepress-org/webhook-in-docker"
+ARG ALPINE_VERSION="3.10"
 
 # --- BUILDER LAYER -------------------------------
-FROM golang:alpine3.10 AS build
+FROM golang:alpine${ALPINE_VERSION} AS build
 
 ARG APP_NAME
 ARG VERSION
@@ -28,7 +30,7 @@ RUN go get -u -v github.com/adnanh/"${APP_NAME}" && \
 
 
 # --- FINAL LAYER -------------------------------
-FROM alpine:3.10 AS final
+FROM alpine:${ALPINE_VERSION} AS final
 
 ARG APP_NAME
 ARG VERSION
