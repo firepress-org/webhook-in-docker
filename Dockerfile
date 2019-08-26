@@ -16,7 +16,7 @@ RUN set -eux && apk --update --no-cache add \
 RUN curl -L --silent -o webhook.tar.gz https://github.com/adnanh/webhook/archive/${VERSION}.tar.gz && \
     tar -xzf webhook.tar.gz --strip 1 &&  \
     go get -d && \
-    go build -o /usr/local/bin/webhook
+    go build -o /usr/local/bin/webhook && \
     upx /usr/local/bin/webhook && \
     upx -t /usr/local/bin/webhook
 
