@@ -42,7 +42,7 @@ RUN set -eux && apk --update --no-cache add \
 COPY --from=build /go/bin/"${APP_NAME}" /usr/local/bin/"${APP_NAME}"
 VOLUME [ "/etc/webhook" ]
 EXPOSE 9000
-WORKDIR [ "/etc/webhook" ]
+WORKDIR /etc/webhook
 
 # Run as non-root
 RUN addgroup -S grp_"${APP_NAME}" && \
