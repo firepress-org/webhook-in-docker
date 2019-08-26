@@ -6,6 +6,8 @@ FROM golang:alpine3.10 AS build
 
 ARG APP_NAME
 ARG VERSION
+# Warning. Because the CI rebuild the image everyday,
+# we install the latest version of the app regardless the $VERSION we define in the Dockerfile.
 
 WORKDIR go/src/github.com/adnanh/webhook
 
@@ -18,7 +20,6 @@ RUN set -eux && apk --update --no-cache add \
     -t build-deps curl libc-dev gcc libgcc
 
 # Install app
-# Warning. Because the CI rebuild the image everyday, we install the latest version of the app regardless the $VERSION we define in the Dockerfile.
 RUN go get -u -v github.com/adnanh/"${APP_NAME}" && \
     # compress binary
     upx /go/bin/"${APP_NAME}" && \
@@ -34,10 +35,18 @@ ARG VERSION
 
 # Install basics
 RUN set -eux && apk --update --no-cache add \
-    openssl ca-certificates tini
+    ca-certificates tini
 
 COPY --from=build /go/bin/"${APP_NAME}" /usr/local/bin/"${APP_NAME}"
 VOLUME [ "/etc/webhook" ]
 EXPOSE 9000
-WORKDIR /etc/webhook
-ENTRYPOINT [ "/usr/local/bin/webhook" ]
+WORKDIR [ "/etc/webhook" ]
+
+# Run as non-root
+RUN addgroup -S grp_"${APP_NAME}" && \
+    adduser -S usr_"${APP_NAME}" -G grp_"${APP_NAME}" && \
+    chown usr_"${APP_NAME}":grp_"${APP_NAME}" /usr/local/bin/"${APP_NAME}"
+USER usr_"${APP_NAME}"
+
+ENTRYPOINT  [ "/sbin/tini", "--" ]
+CMD [ "/usr/local/bin/webhook", "-version" ]
