@@ -1,19 +1,29 @@
-# Dockerfile for https://github.com/adnanh/webhook
-FROM        golang:alpine3.10 AS build
-MAINTAINER  Almir Dzinovic <almir@dzinovic.net>
-WORKDIR     /go/src/github.com/adnanh/webhook
-ENV         WEBHOOK_VERSION 2.6.9
-RUN         apk add --update -t build-deps curl libc-dev gcc libgcc
-RUN         curl -L --silent -o webhook.tar.gz https://github.com/adnanh/webhook/archive/${WEBHOOK_VERSION}.tar.gz && \
-            tar -xzf webhook.tar.gz --strip 1 &&  \
-            go get -d && \
-            go build -o /usr/local/bin/webhook && \
-            apk del --purge build-deps && \
-            rm -rf /var/cache/apk/* && \
-            rm -rf /go
+# --- BUILDER LAYER -------------------------------
+FROM golang:alpine3.10 AS build
+ARG APP_NAME="webhook"
+ARG VERSION="2.6.9"
 
-FROM        alpine:3.10
-COPY        --from=build /usr/local/bin/webhook /usr/local/bin/webhook
-VOLUME      ["/etc/webhook"]
-EXPOSE      9000
-ENTRYPOINT  ["/usr/local/bin/webhook"]
+WORKDIR go/src/github.com/adnanh/webhook
+
+# Install basics
+RUN set -eux && apk --update --no-cache add \
+    bash wget curl git openssl ca-certificates fuse tini upx
+
+# Install Go dependencies
+RUN set -eux && apk --update --no-cache add \
+    -t build-deps curl libc-dev gcc libgcc
+
+RUN curl -L --silent -o webhook.tar.gz https://github.com/adnanh/webhook/archive/${VERSION}.tar.gz && \
+    tar -xzf webhook.tar.gz --strip 1 &&  \
+    go get -d && \
+    go build -o /usr/local/bin/webhook
+    upx /usr/local/bin/webhook && \
+    upx -t /usr/local/bin/webhook
+
+# --- FINAL LAYER -------------------------------
+FROM alpine:3.10 AS final
+
+COPY --from=build /usr/local/bin/webhook /usr/local/bin/webhook
+VOLUME [ "/etc/webhook" ]
+EXPOSE 9000
+ENTRYPOINT [ "/usr/local/bin/webhook" ]
