@@ -30,7 +30,7 @@ RUN go get -u -v github.com/adnanh/"${APP_NAME}" && \
 
 
 # --- FINAL LAYER -------------------------------
-FROM ubuntu:16.04 AS final
+FROM alpine:${ALPINE_VERSION} AS final
 
 ARG APP_NAME
 ARG VERSION
