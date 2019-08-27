@@ -66,7 +66,6 @@ RUN set -eux && apk --update --no-cache add \
 COPY --from=build /go/bin/"${APP_NAME}" /usr/local/bin/"${APP_NAME}"
 
 WORKDIR /etc/webhook
-WORKDIR /mnt/DeployGRP/tooldata/webhooks/
 VOLUME [ "/etc/webhook", "/mnt/DeployGRP/tooldata/webhooks/" ]
 
 EXPOSE 9000
