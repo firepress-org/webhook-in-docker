@@ -60,11 +60,8 @@ LABEL org.opencontainers.image.title="${APP_NAME}"                              
       org.firepress.image.schemaversion="1.0"
 
 # Install basics
-RUN apt-get update -qy && apt-get upgrade -qy && \
-    apt-get install ca-certificates tini
-
-#RUN set -eux && apk --update --no-cache add \
-#    ca-certificates tini
+RUN set -eux && apk --update --no-cache add \
+    ca-certificates tini
 
 COPY --from=build /go/bin/"${APP_NAME}" /usr/local/bin/"${APP_NAME}"
 
