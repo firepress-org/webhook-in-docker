@@ -53,7 +53,7 @@ LABEL org.opencontainers.image.title="${APP_NAME}"                              
       org.opencontainers.image.revision="${SOURCE_COMMIT}"                                      \
       org.opencontainers.image.source="${GIT_REPO}"       \
       org.opencontainers.image.licenses="GNUv3. See README.md" \
-      org.firepress.image.user="usr_${APP_NAME}"                                                \
+      org.firepress.image.user="root"                                                \
       org.firepress.image.alpineversion="{ALPINE_VERSION}"                                      \
       org.firepress.image.field1="not_set"                                                      \
       org.firepress.image.field2="not_set"                                                      \
@@ -67,15 +67,11 @@ RUN apt-get update -qy && apt-get upgrade -qy && \
 #    ca-certificates tini
 
 COPY --from=build /go/bin/"${APP_NAME}" /usr/local/bin/"${APP_NAME}"
-VOLUME [ "/etc/webhook" ]
-EXPOSE 9000
+
 WORKDIR /etc/webhook
+WORKDIR /mnt/DeployGRP/tooldata/webhooks/
+VOLUME [ "/etc/webhook", "/mnt/DeployGRP/tooldata/webhooks/" ]
 
-# Run as non-root
-#RUN addgroup -S grp_"${APP_NAME}" && \
-#    adduser -S usr_"${APP_NAME}" -G grp_"${APP_NAME}" && \
-#    chown usr_"${APP_NAME}":grp_"${APP_NAME}" /usr/local/bin/"${APP_NAME}"
-#USER usr_"${APP_NAME}"
-
+EXPOSE 9000
 ENTRYPOINT  [ "/sbin/tini", "--" ]
 CMD [ "/usr/local/bin/webhook", "-version" ]
