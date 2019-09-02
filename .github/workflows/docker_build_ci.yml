@@ -32,8 +32,8 @@ jobs:
           echo "registry" > GITHUB_REGISTRY
           #
           # Logically defined
-          cat Dockerfile | grep APP_NAME= | head -n 1 | grep -o '".*"' | sed 's/"//g' > APP_NAME
-          cat Dockerfile | grep VERSION= | head -n 1 | grep -o '".*"' | sed 's/"//g' > VERSION
+          cat $(cat DOCKERFILE_NAME) | grep APP_NAME= | head -n 1 | grep -o '".*"' | sed 's/"//g' > APP_NAME
+          cat $(cat DOCKERFILE_NAME) | grep VERSION= | head -n 1 | grep -o '".*"' | sed 's/"//g' > VERSION
           date -d "-4 hours" "+%Y-%m-%d_%HH%Ms%S" > DATE_IT
           git rev-parse --short HEAD > SHORT_COMMIT_HASH
           echo "$(cat DOCKERHUB_USER)/$(cat APP_NAME)" > DOCKER_USER_APP
@@ -125,8 +125,8 @@ jobs:
       - name: Define variables
         run: |
           echo "devmtl" > DOCKERHUB_USER
-          cat Dockerfile | grep APP_NAME= | head -n 1 | grep -o '".*"' | sed 's/"//g' > APP_NAME
-          cat Dockerfile | grep VERSION= | head -n 1 | grep -o '".*"' | sed 's/"//g' > VERSION
+          cat $(cat DOCKERFILE_NAME) | grep APP_NAME= | head -n 1 | grep -o '".*"' | sed 's/"//g' > APP_NAME
+          cat $(cat DOCKERFILE_NAME) | grep VERSION= | head -n 1 | grep -o '".*"' | sed 's/"//g' > VERSION
           git rev-parse --short HEAD > SHORT_COMMIT_HASH
           echo "$(cat APP_NAME):$(cat VERSION) / $(cat SHORT_COMMIT_HASH)" > NOTI_MESSAGE
 
