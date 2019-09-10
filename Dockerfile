@@ -1,6 +1,7 @@
 # Those are required by Github Action CI
-ARG APP_NAME="webhook"
 ARG VERSION="2.6.9"
+ARG APP_NAME="webhook"
+ARG GIT_PROJECT_NAME="webhook-in-docker"
 #
 ARG ALPINE_VERSION="3.10"
 ARG USER="root"
@@ -9,8 +10,6 @@ ARG DOCKERHUB_USER="devmtl"
 ARG GITHUB_USER="firepress"
 ARG GITHUB_ORG="firepress-org"
 ARG GITHUB_REGISTRY="registry"
-#
-ARG GIT_REPO="https://github.com/firepress-org/webhook-in-docker"
 
 # GNU v3 | Please credit my work if you are re-using some of it :)
 # by Pascal Andy | https://pascalandy.com/blog/now/
@@ -47,12 +46,12 @@ FROM alpine:${ALPINE_VERSION} AS final
 
 ARG APP_NAME
 ARG VERSION
-ARG GIT_REPO
+ARG GIT_PROJECT_NAME
 ARG ALPINE_VERSION
 
 ENV APP_NAME="${APP_NAME}"
 ENV VERSION="${VERSION}"
-ENV GIT_REPO="${GIT_REPO}"
+ENV GIT_PROJECT_NAME="${GIT_PROJECT_NAME}"
 ENV ALPINE_VERSION="{ALPINE_VERSION}"
 ENV CREATED_DATE="$(date "+%Y-%m-%d_%HH%Ms%S")"
 ENV SOURCE_COMMIT="$(git rev-parse --short HEAD)"
@@ -64,7 +63,7 @@ LABEL org.opencontainers.image.title="${APP_NAME}"                              
       org.opencontainers.image.authors="Pascal Andy https://firepress.org/en/contact/"          \
       org.opencontainers.image.created="${CREATED_DATE}"                                        \
       org.opencontainers.image.revision="${SOURCE_COMMIT}"                                      \
-      org.opencontainers.image.source="${GIT_REPO}"       \
+      org.opencontainers.image.source="${GIT_PROJECT_NAME}"       \
       org.opencontainers.image.licenses="GNUv3. See README.md" \
       org.firepress.image.user="root"                                                \
       org.firepress.image.alpineversion="{ALPINE_VERSION}"                                      \
