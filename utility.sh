@@ -214,8 +214,11 @@ function release {
       -m "${release_message3}" \
       -t "$(git rev-parse HEAD)" \
       "${tag_version}"
+
     # https://hub.github.com/hub-release.1.html
       # title
+      # description
+      # description
       # description
       # on which commits (use the latest)
       # on which tag (use the latest)
@@ -226,6 +229,26 @@ function release {
     my_message="You must be a master branch." App_Pink
   fi
 }
+function release_find_the_latest {
+
+  APP_NAME=$(cat Dockerfile | grep APP_NAME= | head -n 1 | grep -o '".*"' | sed 's/"//g')
+  GITHUB_ORG=$(cat Dockerfile | grep GITHUB_ORG= | head -n 1 | grep -o '".*"' | sed 's/"//g')
+
+  if [[ -z "${APP_NAME}" ]] && [[ -z "${GITHUB_ORG}" ]] ; then    #if empty
+    clear
+    my_message="Can't find APP_NAME and/or GITHUB_ORG in the Dockerfile." App_Pink
+    App_stop
+  else
+
+    my_message=$(curl -s https://api.github.com/repos/${GITHUB_ORG}/${APP_NAME}/releases/latest | \
+      grep tag_name | \
+      awk -F ': "' '{ print $2 }' | \
+      awk -F '",' '{ print $1 }')
+
+    App_Blue
+  fi
+}
+
 function hash {
   git rev-parse --short HEAD
 }
