@@ -1,7 +1,20 @@
+# Those are required by Github Action CI
 ARG APP_NAME="webhook"
 ARG VERSION="2.6.9"
-ARG GIT_REPO="https://github.com/firepress-org/webhook-in-docker"
+#
 ARG ALPINE_VERSION="3.10"
+ARG USER="root"
+#
+ARG DOCKERHUB_USER="devmtl"
+ARG GITHUB_USER="firepress"
+ARG GITHUB_ORG="firepress-org"
+ARG GITHUB_REGISTRY="registry"
+#
+ARG GIT_REPO="https://github.com/firepress-org/webhook-in-docker"
+
+# GNU v3 | Please credit my work if you are re-using some of it :)
+# by Pascal Andy | https://pascalandy.com/blog/now/
+
 
 # --- BUILDER LAYER -------------------------------
 FROM golang:alpine${ALPINE_VERSION} AS build
