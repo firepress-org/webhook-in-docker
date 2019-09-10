@@ -12,9 +12,15 @@ Based on this [template](https://gist.github.com/pascalandy/af709db02d3fe132a3e6
 
 # Releases
 
-## 2.6.9-r0
+## 2.6.9-r1
+### ⚡️ Updates
+- d9deb23 update utility.sh to v0.8.4
+- 8ab50df Init gitignore
+- 5f66924 Init dockerignore
 
-Overall this projet is now running smoothly in the way we manage projects at FirePress.
+## 2.6.9-r0
+### ⚡️ Updates
+- Overall this projet is now running smoothly in the way we manage projects at FirePress.
 
 ### ⚡️ Updates
 - 8b5e820 Improve README / squashed
