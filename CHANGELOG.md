@@ -12,6 +12,11 @@ Based on this [template](https://gist.github.com/pascalandy/af709db02d3fe132a3e6
 
 # Releases
 
+## 2.6.9-r2
+### ⚡️ Updates
+- b446285 introduce a new var to fix logic is where APP_NAME is not the same as git_repo_name
+- ed71456 update utility.sh v0.8.5
+
 ## 2.6.9-r1
 ### ⚡️ Updates
 - d9deb23 update utility.sh to v0.8.4
