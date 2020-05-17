@@ -1,9 +1,10 @@
 # Those are required by Github Action CI
-ARG VERSION="2.6.9"
+ARG VERSION="2.7.0"
 ARG APP_NAME="webhook"
 ARG GIT_PROJECT_NAME="webhook-in-docker"
 #
-ARG ALPINE_VERSION="3.10"
+ARG ALPINE_VERSION="3.11"
+ARG GO_VERSION="1.14-alpine3.11"
 ARG USER="root"
 #
 ARG DOCKERHUB_USER="devmtl"
@@ -14,9 +15,8 @@ ARG GITHUB_REGISTRY="registry"
 # GNU v3 | Please credit my work if you are re-using some of it :)
 # by Pascal Andy | https://pascalandy.com/blog/now/
 
-
 # --- BUILDER LAYER -------------------------------
-FROM golang:alpine${ALPINE_VERSION} AS build
+FROM golang:${GO_VERSION} AS build
 
 ARG APP_NAME
 ARG VERSION
