@@ -12,7 +12,7 @@ ARG GITHUB_USER="firepress"
 ARG GITHUB_ORG="firepress-org"
 ARG GITHUB_REGISTRY="registry"
 
-# GNU v3 | Please credit my work if you are re-using some of it :)
+# GNU v3 | Please credit my work if you are re-using some of it :) 
 # by Pascal Andy | https://pascalandy.com/blog/now/
 
 # --- BUILDER LAYER -------------------------------
